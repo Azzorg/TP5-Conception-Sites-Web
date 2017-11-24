@@ -6,7 +6,7 @@ import { Config } from './config';
  * Defines a product inside shopping-cart.
  */
 export class ProductItem  {
-  id: number;
+  productId: number;
   quantity : number
 }
 
