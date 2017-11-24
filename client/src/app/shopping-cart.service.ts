@@ -5,9 +5,9 @@ import { Config } from './config';
 /**
  * Defines a product inside shopping-cart.
  */
-export class ProductItem  {
+export class ProductItem {
   productId: number;
-  quantity : number
+  quantity: number
 }
 
 /**
@@ -68,8 +68,13 @@ export class ShoppingCartService {
    * 
    * @param product 
    */
-  postItem(product: ProductItem){
-
+  postItem(product: ProductItem): Promise<any> {
+    const url = `${Config.apiUrl}/shopping-cart/`;
+    let body = JSON.stringify(product);
+    return this.http.post(url, body)
+      .toPromise()
+      .then(res => res.json())
+      .catch(() => null);
   }
 
 
@@ -78,8 +83,14 @@ export class ShoppingCartService {
    * 
    * @param product 
    */
-  putItem(product: ProductItem){
-      
+  putItem(product: ProductItem) {
+    const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
+    let prod = {"quantity" : product.quantity};
+    let body = JSON.stringify(prod);
+    return this.http.post(url, body)
+      .toPromise()
+      .then(res => res.json())
+      .catch(() => null);
   }
 
 }
