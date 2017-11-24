@@ -87,7 +87,7 @@ export class ShoppingCartService {
     const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
     let prod = {"quantity" : product.quantity};
     let body = JSON.stringify(prod);
-    return this.http.post(url, body)
+    return this.http.put(url, body)
       .toPromise()
       .then(res => res.json())
       .catch(() => null);
