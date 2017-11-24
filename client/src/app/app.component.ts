@@ -23,6 +23,7 @@ export class AppComponent {
     'Théo Charlot (1922297)'
   ];
 
+  
   /**
    * Occurs when the component is initialized.
    */
