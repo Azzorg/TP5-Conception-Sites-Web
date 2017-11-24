@@ -15,6 +15,7 @@ export class ShoppingCartComponent {
   /* Variables */
   items: Array<ProductItem> = new Array<ProductItem>();
   lstProduct: Array<Product> = new Array<Product>();
+  totalPrice: number = 0;
 
   constructor(private shoppingCartService: ShoppingCartService, private productsService: ProductsService) { }
 
@@ -70,6 +71,8 @@ export class ShoppingCartComponent {
     console.log(this.items);
     this.items = lstInt;
     console.log(this.items);
+
+    this.calculatePrice();
   }
 
   /**
@@ -82,5 +85,12 @@ export class ShoppingCartComponent {
     let nameLowerCaseA = a.name.toLowerCase();
     let nameLowerCaseB = b.name.toLowerCase();
     return nameLowerCaseA > nameLowerCaseB ? 1 : -1;
+  }
+
+  calculatePrice(){
+    this.totalPrice = 0;
+    for(let i = 0; i<this.lstProduct.length; i++){
+      this.totalPrice += this.lstProduct[i].price * this.items[i].quantity;
+    }
   }
 }
