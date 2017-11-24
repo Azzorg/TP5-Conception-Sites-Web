@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ShoppingCartService } from './shopping-cart.service';
+import { ProductItem } from './shopping-cart.service';
 
 /**
  * Defines the main component of the application.
@@ -15,7 +16,7 @@ export class AppComponent {
   nbItem: number = 0;
   items = new Array();
 
-  constructor(private http: HttpClient) {
+  constructor(private shoppingCartService : ShoppingCartService) {
     console.log("constructor");
   }
 
@@ -36,15 +37,11 @@ export class AppComponent {
    * Récupération du panier pour avoir le nombre d'item qui sont présents dedans 
    */
   getNbItemCart(): void {
-    this.http.get(this.getPanierRequest).subscribe(
-      data => {
-        console.log(data);
-        this.items = data as Object[];
+    this.shoppingCartService.getItems()
+      .then(value => {
+        this.items = value;
         this.nbItem = this.items.length;
-        console.log("Nombre d'item dans le panier : " + this.items.length)
-      },
-      err => {
-        console.error("Erreur : " + err);
+        console.log("products length : " + this.items.length);
       });
   }
 }
