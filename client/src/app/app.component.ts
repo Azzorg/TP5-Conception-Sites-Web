@@ -16,9 +16,7 @@ export class AppComponent {
   nbItem: number = 0;
   items = new Array();
 
-  constructor(private shoppingCartService : ShoppingCartService) {
-    console.log("constructor");
-  }
+  constructor(private shoppingCartService: ShoppingCartService) { }
 
   readonly authors = [
     'Camille Goupil (1922286)',
@@ -41,7 +39,6 @@ export class AppComponent {
       .then(value => {
         this.items = value;
         this.nbItem = this.items.length;
-        console.log("products length : " + this.items.length);
       });
   }
 }
