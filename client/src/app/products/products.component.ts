@@ -49,7 +49,6 @@ export class ProductsComponent implements OnInit{
         let re = /\./;
         for(var i=0; i<this.lstProducts.length; i++){
           this.lstPrices.push(this.lstProducts[i].price.toString().replace(re, ","));
-          console.log("price : " + this.lstPrices[i]);
         }
         console.log("products length : " + this.lstProducts.length);
         this.countProducts = this.lstProducts.length;

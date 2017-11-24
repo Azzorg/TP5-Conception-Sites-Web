@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from './../products.service';
 import { Product } from './../products.service';
+import { ShoppingCartService } from './../shopping-cart.service';
+import { ProductItem } from './../shopping-cart.service';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
@@ -24,7 +26,7 @@ export class ProductComponent implements OnInit {
    *
    * @param route                   The active route.
    */
-  constructor(private route: ActivatedRoute, private productsService : ProductsService, public router : Router) { }
+  constructor(private route: ActivatedRoute, private productsService : ProductsService, private shoppingCartService : ShoppingCartService, public router : Router) { }
 
   /**
    * Occurs when the component is initialized.
@@ -39,6 +41,14 @@ export class ProductComponent implements OnInit {
         console.log("ID PRODUCT : " + this.id);
         let re = /\./;
         this.price = this.product.price.toString().replace(re, ',');
+        this.shoppingCartService.getItem(this.id)
+          .then(value => {
+            this.quantity = value.quantity;
+            console.log("quantity : " + value.quantity);
+          })
+          .catch(value => {
+            this.quantity = 1;
+          });
       })
       .catch(value => {
         //product not existing => error page
