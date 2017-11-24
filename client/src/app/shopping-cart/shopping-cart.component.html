@@ -30,7 +30,7 @@
               <div class="col">
                 <button *ngIf="this.lstProduct == 1" class="remove-quantity-button" title="Retirer" disabled>
                   <i class="fa fa-minus"></i>
-                </button>                
+                </button>
                 <button *ngIf="this.lstProduct > 1" class="remove-quantity-button" title="Retirer">
                   <i class="fa fa-minus"></i>
                 </button>
@@ -49,7 +49,7 @@
     </table>
 
     <p class="shopping-cart-total">Total:
-      <strong id="total-amount">704,94&thinsp;$</strong>
+      <strong id="total-amount">{{totalPrice}}&thinsp;$</strong>
     </p>
     <a class="btn pull-right" routerLink="/commande">Commander
       <i class="fa fa-angle-double-right"></i>
