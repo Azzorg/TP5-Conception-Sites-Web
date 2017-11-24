@@ -14,6 +14,7 @@ export class ProductsComponent implements OnInit{
   // TODO: À compléter
   countProducts : number;
   lstProducts : Array<Product> = new Array<Product>();
+  lstPrices : Array<string> = new Array<string>();
   category : string = "all";
   criteria : string = "price-asc";
 
@@ -44,6 +45,12 @@ export class ProductsComponent implements OnInit{
     this.productsService.getProducts(this.criteria, this.category)
       .then(value => {
         this.lstProducts = value;
+        this.lstPrices = new Array<string>();
+        let re = /\./;
+        for(var i=0; i<this.lstProducts.length; i++){
+          this.lstPrices.push(this.lstProducts[i].price.toString().replace(re, ","));
+          console.log("price : " + this.lstPrices[i]);
+        }
         console.log("products length : " + this.lstProducts.length);
         this.countProducts = this.lstProducts.length;
       });
