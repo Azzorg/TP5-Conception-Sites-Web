@@ -3,11 +3,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-const CONFIG = {
-  user: "antoine",
-  password: "antoine"
-};
-
 var Order = new Schema({
   id: { type: Number, unique: true },
   firstName: String,
@@ -32,5 +27,9 @@ mongoose.model("Order", Order);
 mongoose.model("Product", Product);
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://" + CONFIG.user + ":" + CONFIG.password + "@ds151993.mlab.com:51993/online-shop",
-  { useMongoClient: true });
+
+mongoose.connect('mongodb://admin:1a2b3c@ds255265.mlab.com:55265/online-shop-db');
+
+module.exports = Product;
+module.exports = Order;
+
