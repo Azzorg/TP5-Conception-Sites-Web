@@ -2,27 +2,27 @@
   <section>
     <h2>Catégories</h2>
     <div class="btn-group vertical" id="product-categories">
-      <button>Appareils photo</button>
-      <button>Consoles</button>
-      <button>Écrans</button>
-      <button>Ordinateurs</button>
-      <button class="selected">Tous les produits</button>
+      <button (click)="changeCategory('cameras')" [ngClass]="{'selected' : category==='cameras'}">Appareils photo</button>
+      <button (click)="changeCategory('consoles')" [ngClass]="{'selected' : category==='consoles'}">Consoles</button>
+      <button (click)="changeCategory('screens')" [ngClass]="{'selected' : category==='screens'}">Écrans</button>
+      <button (click)="changeCategory('computers')" [ngClass]="{'selected' : category==='computers'}">Ordinateurs</button>
+      <button (click)="changeCategory('all')" [ngClass]="{'selected' : category==='all'}">Tous les produits</button>
     </div>
   </section>
   <section>
     <h2>Classement</h2>
     <div class="btn-group vertical" id="product-criteria">
-      <button class="selected">Prix (bas-haut)</button>
-      <button>Prix (haut-bas)</button>
-      <button>Nom (A-Z)</button>
-      <button>Nom (Z-A)</button>
+      <button (click)="changeCriteria('price-asc')" [ngClass]="{'selected' : criteria==='price-asc'}">Prix (bas-haut)</button>
+      <button (click)="changeCriteria('price-dsc')" [ngClass]="{'selected' : criteria==='price-dsc'}">Prix (haut-bas)</button>
+      <button (click)="changeCriteria('alpha-asc')" [ngClass]="{'selected' : criteria==='alpha-asc'}">Nom (A-Z)</button>
+      <button (click)="changeCriteria('alpha-dsc')" [ngClass]="{'selected' : criteria==='alpha-dsc'}">Nom (Z-A)</button>
     </div>
   </section>
 </section>
 <article>
-  <span class="right-header" id="products-count">6 produits</span>
-  <div class="products" id="products-list" *ngFor="let product of lstProducts;">
-    <div class="product">
+  <span class="right-header" id="products-count">{{countProducts}} produits</span>
+  <div class="products" id="products-list">
+    <div class="product" *ngFor="let product of lstProducts;">
       <a routerLink="/produits/{{product.id}}" title="En savoir plus...">
         <h2>{{product.name}}</h2>
         <img alt="{{product.name}}" src="./assets/img/{{product.image}}">
