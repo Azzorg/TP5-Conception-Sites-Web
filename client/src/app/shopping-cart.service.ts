@@ -69,8 +69,10 @@ export class ShoppingCartService {
    * @param product 
    */
   postItem(product: ProductItem): Promise<any> {
-    const url = `${Config.apiUrl}/shopping-cart/`;
+    const url = `${Config.apiUrl}/shopping-cart`;
     let body = JSON.stringify(product);
+    console.log("////BODY : ");
+    console.log(body);
     return this.http.post(url, body)
       .toPromise()
       .then(res => res.json())
