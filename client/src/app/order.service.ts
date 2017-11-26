@@ -41,7 +41,7 @@ export class OrderService {
      */
     constructor(private http: Http) { }
 
-    
+
     /**
      * Gets all the orders in the database.
      *
@@ -55,5 +55,20 @@ export class OrderService {
             .catch(OrderService.handleError);
     }
 
+
+
+    /**
+     * Gets the item associated with the order ID specified.
+     *
+     * @param orderId               The order ID associated with the order to retrieve.
+     * @returns {Promise<Order>}    A promise that contains the product associated with the ID specified.
+     */
+    getOrder(orderId: number): Promise<Order> {
+        const url = `${Config.apiUrl}/order/${orderId}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(order => order.json() as Order)
+            .catch(() => null);
+    }
 
 }
