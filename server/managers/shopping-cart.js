@@ -54,8 +54,11 @@ self.addItem = function(item) {
   var deferred = Q.defer();
 
   var isValid = MODEL.every(function(property) {
+    console.log("property : " + property);
+    console.log(property in item);
     return property in item;
   });
+  console.log("isvalid : " + isValid);
   if (!isValid) {
     deferred.resolve(true);
     return deferred.promise;
