@@ -35,22 +35,25 @@ export class OrderService {
 
 
     /**
-     * Initializes a new instance of the ProductsService class.
+     * Initializes a new instance of the OrdersService class.
      *
      * @param http                    The HTTP service to use.
      */
     constructor(private http: Http) { }
 
+    
     /**
      * Gets all the orders in the database.
      *
      * @return {Promise<Order[]>}   The category of the product. The default value is "all".
      */
-    getProducts(): Promise<Order[]> {
+    getOrders(): Promise<Order[]> {
         let url = `${Config.apiUrl}/order/`;
         return this.http.get(url)
             .toPromise()
             .then(orders => orders.json() as Order[])
             .catch(OrderService.handleError);
     }
+
+
 }
