@@ -71,4 +71,19 @@ export class OrderService {
             .catch(() => null);
     }
 
+
+
+    /**
+     * Add an item inside shopping-cart
+     * 
+     * @param product 
+     */
+    postOrder(order: Order): Promise<any> {
+        const url = `${Config.apiUrl}/order/`;
+        let body = JSON.stringify(order);
+        return this.http.post(url, body)
+            .toPromise()
+            .then(res => res.json())
+            .catch(() => null);
+    }
 }
