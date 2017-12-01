@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService } from './../products.service';
 import { Product } from './../products.service';
 import { Http } from '@angular/http';
+import { CurrencyFormat } from './../currencyPipe';
 
 /**
  * Defines the component responsible to manage the display of the products page.
@@ -10,15 +11,14 @@ import { Http } from '@angular/http';
   selector: 'products',
   templateUrl: './products.component.html'
 })
-export class ProductsComponent implements OnInit{
+export class ProductsComponent implements OnInit {
   // TODO: À compléter
-  countProducts : number;
-  lstProducts : Array<Product> = new Array<Product>();
-  lstPrices : Array<string> = new Array<string>();
-  category : string = "all";
-  criteria : string = "price-asc";
+  countProducts: number;
+  lstProducts: Array<Product> = new Array<Product>();
+  category: string = "all";
+  criteria: string = "price-asc";
 
-  constructor(private productsService : ProductsService) {}
+  constructor(private productsService: ProductsService) { }
 
   /**
    * Occurs when the component is initialized.
@@ -28,28 +28,23 @@ export class ProductsComponent implements OnInit{
     this.getProducts();
   }
 
-  changeCriteria(criteria : string){
+  changeCriteria(criteria: string) {
     console.log("change criteria : " + criteria);
     this.criteria = criteria;
     this.getProducts();
   }
 
-  changeCategory(category : string){
+  changeCategory(category: string) {
     console.log("change category : " + category);
     this.category = category;
     this.getProducts();
   }
 
-  getProducts(){
+  getProducts() {
     //get the products list
     this.productsService.getProducts(this.criteria, this.category)
       .then(value => {
         this.lstProducts = value;
-        this.lstPrices = new Array<string>();
-        let re = /\./;
-        for(var i=0; i<this.lstProducts.length; i++){
-          this.lstPrices.push(this.lstProducts[i].price.toString().replace(re, ","));
-        }
         console.log("products length : " + this.lstProducts.length);
         this.countProducts = this.lstProducts.length;
       });
