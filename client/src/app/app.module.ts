@@ -58,7 +58,8 @@ const appRoutes: Routes = [
   providers: [
     ProductsService,
     ShoppingCartService,
-    OrderService
+    OrderService,
+    CurrencyFormat
   ],
   bootstrap: [AppComponent]
 })

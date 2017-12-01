@@ -8,13 +8,19 @@ import { ProductItem } from './shopping-cart.service';
 /**
  * Defines an order
  */
+
+export class ProductOrder {
+  public id : number;
+  public quantity : number;
+}
+
 export class Order {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    products: ProductItem[];
+    public id: number;
+    public firstName: string;
+    public lastName: string;
+    public email: string;
+    public phone: string;
+    public products: ProductOrder[];
 }
 
 
@@ -51,7 +57,7 @@ export class OrderService {
      * @return {Promise<Order[]>}   A promise that contains the list of all orders.
      */
     getOrders(): Promise<Order[]> {
-        let url = `${Config.apiUrl}/order/`;
+        let url = `${Config.apiUrl}/orders/`;
         return this.http.get(url)
             .toPromise()
             .then(orders => orders.json() as Order[])
@@ -67,7 +73,7 @@ export class OrderService {
      * @returns {Promise<Order>}    A promise that contains the order associated with the ID specified.
      */
     getOrder(orderId: number): Promise<Order> {
-        const url = `${Config.apiUrl}/order/${orderId}`;
+        const url = `${Config.apiUrl}/orders/${orderId}`;
         return this.http.get(url)
             .toPromise()
             .then(order => order.json() as Order)
@@ -83,7 +89,7 @@ export class OrderService {
      * @returns {Promise<any>}    A promise that contains the order posted.
      */
     postOrder(order: Order): Promise<any> {
-        const url = `${Config.apiUrl}/order/`;
+        const url = `${Config.apiUrl}/orders/`;
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers, withCredentials: true });
         let body = JSON.stringify(order);
@@ -99,7 +105,7 @@ export class OrderService {
      * @returns {Promise<any>}    a promise that contains nothing.
      */
     deleteOrders(): Promise<any> {
-        const url = `${Config.apiUrl}/order`;
+        const url = `${Config.apiUrl}/orders`;
         return this.http.delete(url)
             .toPromise()
             .then(order => console.log("All orders deleted => succed"))
@@ -113,7 +119,7 @@ export class OrderService {
      * @returns {Promise<any>}    a promise that contains nothing.
      */
     deleteOrder(orderId: number): Promise<any> {
-        const url = `${Config.apiUrl}/order/${orderId}`;
+        const url = `${Config.apiUrl}/orders/${orderId}`;
         return this.http.delete(url)
             .toPromise()
             .then(order => console.log("order deleted => succed"))

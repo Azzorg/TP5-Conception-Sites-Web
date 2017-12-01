@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from './../order.service';
+import { Order } from './../order.service';
+import { ProductItem } from './../shopping-cart.service';
+import { ShoppingCartService } from './../shopping-cart.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 declare const $: any;
@@ -23,7 +26,7 @@ export class OrderComponent implements OnInit {
   expiration : string;
 
 
-  constructor(private orderService : OrderService, public router : Router) { }
+  constructor(private orderService : OrderService, public router : Router, private shoppingCartService: ShoppingCartService) { }
   /**
    * Occurs when the component is initialized.
    */
@@ -63,5 +66,88 @@ export class OrderComponent implements OnInit {
     }
     // TODO: Compléter la soumission des informations lorsque le formulaire soumis est valide.
     console.log(form.value);
+    // get the last id in ther orders collection
+    this.orderService.getOrders()
+      .then(data => {
+        let id = data[data.length-1].id + 1;
+
+        let order = new Order();
+        order.id = id;
+        order.firstName = form.value.firstName;
+        order.lastName = form.value.lastName;
+        order.email = form.value.email;
+        order.phone = form.value.phone;
+        order.products = [];
+        /* Get the list of items in the shopping-cart */
+        this.shoppingCartService.getItems()
+          .then(data => {
+
+            for(let item of data){
+              let prod = {
+                id : item.productId,
+                quantity : item.quantity
+              }
+              order.products.push(prod);
+            }
+            console.log(order);
+            /* Post the order */
+            this.orderService.postOrder(order)
+              .then(data => {
+                console.log("order posted => succed");
+                this.shoppingCartService.deleteItems()
+                  .then(data => {
+                    this.router.navigate(["/confirmation"]);
+                  });
+              })
+              .catch(err => console.log("order posted => failed"))
+          })
+          .catch(err => {
+            console.log("no products in shopping-cart => no order added ! ");
+          })
+
+      })
+      /* If no order in DB => id = 1 */
+      .catch(err => {
+        let id = 1;
+
+        let order = new Order();
+        order.id = 1;
+        order.firstName = form.value.firstName;
+        order.lastName = form.value.lastName;
+        order.email = form.value.email;
+        order.phone = form.value.phone;
+        order.products = [];
+        /* Get the list of items in the shopping-cart */
+        this.shoppingCartService.getItems()
+          .then(data => {
+
+            for(let item of data){
+              let prod = {
+                id : item.productId,
+                quantity : item.quantity
+              }
+              order.products.push(prod);
+            }
+            console.log(order);
+            /* Post the order */
+            this.orderService.postOrder(order)
+              .then(data => {
+                console.log("order posted => succed");
+                this.shoppingCartService.deleteItems()
+                  .then(data => {
+                    this.router.navigate(["/confirmation"]);
+                  });
+              })
+              .catch(err => console.log("order posted => failed"))
+          })
+          .catch(err => {
+            console.log("no products in shopping-cart => no order added ! ");
+          })
+
+
+
+      })
+
+
   }
 }
