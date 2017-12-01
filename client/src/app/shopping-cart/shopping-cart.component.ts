@@ -3,6 +3,7 @@ import { ProductsService } from './../products.service';
 import { ShoppingCartService } from './../shopping-cart.service';
 import { Product } from './../products.service';
 import { ProductItem } from './../shopping-cart.service';
+import { CurrencyFormat } from './../currencyPipe';
 
 /**
  * Defines the component responsible to manage the shopping cart page.
