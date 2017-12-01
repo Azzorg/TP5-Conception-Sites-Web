@@ -16,6 +16,8 @@ export class ShoppingCartComponent {
   items: Array<ProductItem> = new Array<ProductItem>();
   lstProduct: Array<Product> = new Array<Product>();
   totalPrice: number = 0;
+  category: string = "all";
+  criteria: string = "alpha-asc";
 
   constructor(private shoppingCartService: ShoppingCartService, private productsService: ProductsService) { }
 
@@ -24,6 +26,7 @@ export class ShoppingCartComponent {
    */
   ngOnInit() {
     console.log("INITIALIZING SHOPPING-CARD");
+    this.lstProduct = new Array<Product>();
 
     this.getProducts();
   }
@@ -34,25 +37,35 @@ export class ShoppingCartComponent {
    * Then get information from database
    */
   getProducts() {
-    this.shoppingCartService.getItems()
-      .then(value => {
-        // Get items from shopping-cart
-        this.items = value;
-        console.log("products length avant if : " + this.items.length);
 
-        if (this.items.length > 0) {
-          console.log("products length : " + this.items.length);
-          for (let item of this.items) {
-            this.productsService.getProduct(item.productId)
-              .then(value => {
-                let prod: Product = value;
-                this.lstProduct.push(prod);
-              });
+    console.log("/////////////////////////////");
+
+    let requ: [Promise<Product[]>, Promise<ProductItem[]>] = [this.productsService.getProducts(this.criteria, this.category), this.shoppingCartService.getItems()];
+
+    Promise.all(requ)
+      .then((results: any[]) => {
+        this.items = results[1];
+
+        console.log("Taille liste produits : " + results[0].length);
+        console.log("Taille items : " + this.items.length);
+
+        for (let j = 0; j < this.items.length; j++) {
+          for (let i = 0; i < results[0].length; i++) {
+            if (results[0][i].id == this.items[j].productId) { this.lstProduct.push(results[0][i]); }
           }
-          this.sortLists();
         }
+
+        this.sortLists();
+
+      })
+      .catch(err => {
+        console.log(err);
       });
+
+
+    console.log("####################################    OK    ####################");
   }
+
 
   /**
    * Sort lstProduct ET items => avoir une correspondance 
@@ -62,17 +75,108 @@ export class ShoppingCartComponent {
     let lstInt: Array<ProductItem> = new Array<ProductItem>();
     this.lstProduct.sort(this.sortJson);
 
+    console.log("Taille de lstProduct : " + this.lstProduct.length);
+
     for (let i = 0; i < this.lstProduct.length; i++) {
       for (let it of this.items) {
         if (this.lstProduct[i].id == it.productId) { lstInt.push(it); }
       }
     }
 
-    console.log(this.items);
     this.items = lstInt;
-    console.log(this.items);
 
     this.calculatePrice();
+  }
+
+
+  /**
+   * Removing all items in shopping-cart
+   */
+  deleteShoppingCart() {
+    let responseConfirm = confirm("Voulez vous supprimer tout le panier?");
+
+    if (responseConfirm == true) {
+      this.shoppingCartService.deleteItems()
+        .then(value => {
+
+          console.log("#############################     DONE");
+          this.ngOnInit();
+        });
+    }
+  }
+
+
+  /**
+   * Delete an item in shopping-cart with its id
+   * 
+   * @param id 
+   */
+  deleteItem(id: number) {
+    let responseConfirm = confirm("Voulez vous supprimer ce produit du panier?");
+
+    if (responseConfirm == true) {
+      this.shoppingCartService.deleteItem(id)
+        .then(value => {
+
+          console.log("#############################     Yahou");
+          this.ngOnInit();
+        });
+    }
+  }
+
+  /**
+   * Remove quantity of the item with this id
+   * 
+   * @param id 
+   */
+  removeQuantity(id: number) {
+    let prod: ProductItem;
+    let found = false;
+
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].productId === id) {
+        prod = this.items[i];
+        found = true;
+      }
+    }
+
+    if (found) {
+      prod.quantity--;
+
+      this.shoppingCartService.putItem(prod)
+        .then(value => {
+          console.log("#############################     QUANTITÉ ---");
+          this.ngOnInit();
+        });
+    }
+  }
+
+
+  /**
+   * Add quantity of the item with this id
+   * 
+   * @param id 
+   */
+  addQuantity(id: number) {
+    let prod: ProductItem;
+    let found = false;
+
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].productId === id) {
+        prod = this.items[i];
+        found = true;
+      }
+    }
+
+    if (found) {
+      prod.quantity++;
+
+      this.shoppingCartService.putItem(prod)
+        .then(value => {
+          console.log("#############################     QUANTITÉ ++++");
+          this.ngOnInit();
+        });
+    }
   }
 
   /**
@@ -87,9 +191,12 @@ export class ShoppingCartComponent {
     return nameLowerCaseA > nameLowerCaseB ? 1 : -1;
   }
 
-  calculatePrice(){
+  /**
+   *  To calculate the total price of shopping-cart
+   */
+  calculatePrice() {
     this.totalPrice = 0;
-    for(let i = 0; i<this.lstProduct.length; i++){
+    for (let i = 0; i < this.lstProduct.length; i++) {
       this.totalPrice += this.lstProduct[i].price * this.items[i].quantity;
     }
   }
