@@ -125,17 +125,23 @@ export class ShoppingCartService {
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.delete(url, options)
       .toPromise()
-      .then(()) => console.log("delete all completed");)
+      .then( data  => {
+        console.log("delete all completed");
+        this.nbItemsChange.emit('change');
+      })
       .catch(() => console.log("delete all failed"));
   }
 
   deleteItem(productId : number) : Promise<any> {
-    const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
+    const url = `${Config.apiUrl}/shopping-cart/${productId}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.delete(url, options)
       .toPromise()
-      .then(()) => console.log("delete item completed");)
+      .then( data => {
+        console.log("delete item completed");
+        this.nbItemsChange.emit('change');
+      })
       .catch(() => console.log("delete item failed"));
   }
 
