@@ -61,9 +61,6 @@ export class ProductComponent implements OnInit {
     let prod: ProductItem = new ProductItem();
     prod.productId = this.product.id;
     prod.quantity = this.quantity;
-    this.shoppingCartService.postItem(prod)
-    .catch(err => {
-      console.log("//ERREUR : " + err.toString());
-    });
+    this.shoppingCartService.postItem(prod);
   }
 }
