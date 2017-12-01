@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { RequestOptions } from '@angular/http';
-import { Header } from '@angular/http';
+import { Headers } from '@angular/http';
 import { Config } from './config';
 
 /**
@@ -74,14 +74,14 @@ export class ShoppingCartService {
    *
    * @param product
    */
-  postItem(product: ProductItem){
+  postItem(product: ProductItem) {
     const url = `${Config.apiUrl}/shopping-cart`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     let body = JSON.stringify(product);
     console.log("////BODY : ");
     console.log(body);
-    const req =  this.http.post(url, body, options);
+    const req = this.http.post(url, body, options);
     req.subscribe();
   }
 
@@ -91,11 +91,11 @@ export class ShoppingCartService {
    *
    * @param product
    */
-  putItem(product: ProductItem) : Promise<any> {
+  putItem(product: ProductItem): Promise<any> {
     const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
-    let prod = {"quantity" : product.quantity};
+    let prod = { "quantity": product.quantity };
     let body = JSON.stringify(prod);
     return this.http.put(url, body, options)
       .toPromise()
