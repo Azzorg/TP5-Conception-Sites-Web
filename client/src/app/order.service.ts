@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { RequestOptions } from '@angular/http';
+import { Headers } from '@angular/http';
 import { Config } from './config';
 import { ProductItem } from './shopping-cart.service';
 
@@ -41,12 +43,12 @@ export class OrderService {
      */
     constructor(private http: Http) { }
 
-    
+
 
     /**
      * Gets all the orders in the database.
      *
-     * @return {Promise<Order[]>}   The category of the product. The default value is "all".
+     * @return {Promise<Order[]>}   A promise that contains the list of all orders.
      */
     getOrders(): Promise<Order[]> {
         let url = `${Config.apiUrl}/order/`;
@@ -62,7 +64,7 @@ export class OrderService {
      * Gets the item associated with the order ID specified.
      *
      * @param orderId               The order ID associated with the order to retrieve.
-     * @returns {Promise<Order>}    A promise that contains the product associated with the ID specified.
+     * @returns {Promise<Order>}    A promise that contains the order associated with the ID specified.
      */
     getOrder(orderId: number): Promise<Order> {
         const url = `${Config.apiUrl}/order/${orderId}`;
@@ -76,15 +78,45 @@ export class OrderService {
 
     /**
      * Add an item inside shopping-cart
-     * 
-     * @param product 
+     *
+     * @param order The order to post
+     * @returns {Promise<any>}    A promise that contains the order posted.
      */
     postOrder(order: Order): Promise<any> {
         const url = `${Config.apiUrl}/order/`;
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers, withCredentials: true });
         let body = JSON.stringify(order);
-        return this.http.post(url, body)
+        return this.http.post(url, body, options)
             .toPromise()
             .then(res => res.json())
             .catch(() => null);
+    }
+
+    /**
+     * delete all orders
+     *
+     * @returns {Promise<any>}    a promise that contains nothing.
+     */
+    deleteOrders(): Promise<any> {
+        const url = `${Config.apiUrl}/order`;
+        return this.http.delete(url)
+            .toPromise()
+            .then(order => console.log("All orders deleted => succed"))
+            .catch(() => console.log("All orders deleted  => failed"));
+    }
+
+    /**
+     * delete all orders
+     *
+     * @param order The order to delete
+     * @returns {Promise<any>}    a promise that contains nothing.
+     */
+    deleteOrder(orderId: number): Promise<any> {
+        const url = `${Config.apiUrl}/order/${orderId}`;
+        return this.http.delete(url)
+            .toPromise()
+            .then(order => console.log("order deleted => succed"))
+            .catch(() => console.log("order deleted  => failed"));
     }
 }
