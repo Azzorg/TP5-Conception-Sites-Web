@@ -6,6 +6,7 @@ import { ShoppingCartService } from './../shopping-cart.service';
 import { ProductItem } from './../shopping-cart.service';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
+import { CurrencyFormat } from './../currencyPipe';
 
 /**
  * Defines the component responsible to manage the product page.
@@ -40,8 +41,6 @@ export class ProductComponent implements OnInit {
       .then(value => {
         this.product = value;
         console.log("ID PRODUCT : " + this.id);
-        let re = /\./;
-        this.price = this.product.price.toString().replace(re, ',');
         this.shoppingCartService.getItem(this.id)
           .then(value => {
             this.isAlreadyInCart = true;
