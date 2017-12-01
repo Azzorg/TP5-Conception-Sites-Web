@@ -19,13 +19,14 @@
       <hr>
       <form class="pull-right" id="add-to-cart-form">
         <label for="product-quantity">Quantité:</label>
-        <input [(ngModel)]="quantity" class="form-control" id="product-quantity" name="product-quantity" type="number" value="{{quantity}}" min="1" required>
+        <input [(ngModel)]="quantity" class="form-control" id="product-quantity" name="product-quantity" type="number" value="{{quantity}}"
+          min="1" required>
         <button (click)="addProduct()" class="btn" title="Ajouter au panier" type="submit">
           <i class="fa fa-cart-plus"></i>&nbsp; Ajouter
         </button>
       </form>
       <p>Prix:
-        <strong id="product-price">{{price}}&thinsp;$</strong>
+        <strong id="product-price">{{product.price | currencyFormat}}</strong>
       </p>
     </div>
   </div>
