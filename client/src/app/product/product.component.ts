@@ -20,6 +20,7 @@ export class ProductComponent implements OnInit {
   quantity : number;
   id : number;
   price : string;
+  isAlreadyInCart : boolean = false;
 
   /**
    * Initializes a new instance of the ProductComponent class.
@@ -43,10 +44,12 @@ export class ProductComponent implements OnInit {
         this.price = this.product.price.toString().replace(re, ',');
         this.shoppingCartService.getItem(this.id)
           .then(value => {
+            this.isAlreadyInCart = true;
             this.quantity = value.quantity;
             console.log("quantity : " + value.quantity);
           })
           .catch(value => {
+            this.isAlreadyInCart = false;
             this.quantity = 1;
           });
       })
@@ -61,6 +64,12 @@ export class ProductComponent implements OnInit {
     let prod: ProductItem = new ProductItem();
     prod.productId = this.product.id;
     prod.quantity = this.quantity;
-    this.shoppingCartService.postItem(prod);
+    if(this.isAlreadyInCart){
+      this.shoppingCartService.putItem(prod);
+    }
+    else {
+      this.shoppingCartService.postItem(prod);
+    }
+
   }
 }

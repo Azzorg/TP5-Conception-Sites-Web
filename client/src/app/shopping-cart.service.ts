@@ -92,7 +92,7 @@ export class ShoppingCartService {
         this.nbItemsChange.emit('change');
       })
       .catch(() => {
-        console.log("Error Post product in shopping-cart");
+        console.log("Error Post product in shopping-cart => maybe use Put");
       });
   }
 
@@ -110,8 +110,13 @@ export class ShoppingCartService {
     let body = JSON.stringify(prod);
     return this.http.put(url, body, options)
       .toPromise()
-      .then(res => res.json())
-      .catch(() => null);
+      .then(res => {
+        console.log("product correctly puted in shopping-cart");
+        this.nbItemsChange.emit('change');
+      })
+      .catch(() => {
+        console.log("Error Put product in shopping-cart");
+      });
   }
 
 }
