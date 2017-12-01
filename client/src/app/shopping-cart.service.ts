@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { RequestOptions } from '@angular/http';
 import { Headers } from '@angular/http';
 import { Config } from './config';
+import { AppComponent } from './app.component';
 
 /**
  * Defines a product inside shopping-cart.
@@ -17,6 +18,8 @@ export class ProductItem {
  */
 @Injectable()
 export class ShoppingCartService {
+
+  //public static nbProduct : number;
 
   /**
    * Handles the current error.
@@ -74,15 +77,21 @@ export class ShoppingCartService {
    *
    * @param product
    */
-  postItem(product: ProductItem) {
+  postItem(product: ProductItem) : Promise<any>{
     const url = `${Config.apiUrl}/shopping-cart`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     let body = JSON.stringify(product);
     console.log("////BODY : ");
     console.log(body);
-    const req = this.http.post(url, body, options);
-    req.subscribe();
+    return this.http.post(url, body, options)
+      .toPromise()
+      .then(res => {
+        console.log("product correctly posted in shopping-cart");
+      })
+      .catch(() => {
+        console.log("Error Post product in shopping-cart");
+      });
   }
 
 
