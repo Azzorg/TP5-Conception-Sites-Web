@@ -4,6 +4,7 @@ import { RequestOptions } from '@angular/http';
 import { Headers } from '@angular/http';
 import { Config } from './config';
 import { AppComponent } from './app.component';
+import { EventEmitter } from '@angular/core';
 
 /**
  * Defines a product inside shopping-cart.
@@ -19,7 +20,7 @@ export class ProductItem {
 @Injectable()
 export class ShoppingCartService {
 
-  //public static nbProduct : number;
+  nbItemsChange : EventEmitter<any> = new EventEmitter();
 
   /**
    * Handles the current error.
@@ -88,6 +89,7 @@ export class ShoppingCartService {
       .toPromise()
       .then(res => {
         console.log("product correctly posted in shopping-cart");
+        this.nbItemsChange.emit('change');
       })
       .catch(() => {
         console.log("Error Post product in shopping-cart");

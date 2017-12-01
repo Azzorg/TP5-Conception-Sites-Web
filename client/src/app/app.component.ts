@@ -11,19 +11,26 @@ import { ProductItem } from './shopping-cart.service';
 })
 export class AppComponent {
 
+
   /** Variables */
   getPanierRequest: string = 'http://localhost:3000/api/shopping-cart/';
   nbItem: number = 0;
   items = new Array();
 
-  constructor(private shoppingCartService: ShoppingCartService) { }
+  constructor(private shoppingCartService: ShoppingCartService) {
+    shoppingCartService.nbItemsChange.subscribe(() => {
+       this.getNbItemCart();
+       console.log("Emit event");
+    });
+  }
+
 
   readonly authors = [
     'Camille Goupil (1922286)',
     'Théo Charlot (1922297)'
   ];
 
-  
+
   /**
    * Occurs when the component is initialized.
    */
@@ -32,14 +39,18 @@ export class AppComponent {
   }
 
 
-  /** 
-   * Récupération du panier pour avoir le nombre d'item qui sont présents dedans 
+  /**
+   * Récupération du panier pour avoir le nombre d'item qui sont présents dedans
    */
-  getNbItemCart(): void {
+  public getNbItemCart(): void {
     this.shoppingCartService.getItems()
       .then(value => {
         this.items = value;
-        this.nbItem = this.items.length;
+        this.nbItem = 0;
+        for(let item of this.items){
+          this.nbItem += item.quantity;
+        }
+        console.log("NB items in cart : " + this.nbItem);
       });
   }
 }
