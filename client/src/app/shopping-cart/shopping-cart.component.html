@@ -17,44 +17,44 @@
       <tbody>
         <tr *ngFor="let product of this.lstProduct, let i = index" [attr.data-index]="i">
           <td>
-            <button class="remove-item-button" title="Supprimer">
+            <button class="remove-item-button" title="Supprimer" (click)="deleteItem(product.id)">
               <i class="fa fa-times"></i>
             </button>
           </td>
           <td>
-            <a routerLink="/produits/11">{{product.name}}</a>
+            <a routerLink="/produits/{{product.id}}">{{product.name}}</a>
           </td>
-          <td>{{product.price}}&thinsp;$</td>
+          <td>{{product.price | currencyFormat}}&thinsp;$</td>
           <td>
             <div class="row">
               <div class="col">
-                <button *ngIf="this.lstProduct == 1" class="remove-quantity-button" title="Retirer" disabled>
+                <button *ngIf="this.items[i].quantity == 1" class="remove-quantity-button" title="Retirer" disabled>
                   <i class="fa fa-minus"></i>
                 </button>
-                <button *ngIf="this.lstProduct > 1" class="remove-quantity-button" title="Retirer">
+                <button *ngIf="this.items[i].quantity > 1" class="remove-quantity-button" title="Retirer" (click)="removeQuantity(product.id)">
                   <i class="fa fa-minus"></i>
                 </button>
               </div>
               <div class="col quantity">{{this.items[i].quantity}}</div>
               <div class="col">
-                <button class="add-quantity-button" title="Ajouter">
+                <button class="add-quantity-button" title="Ajouter" (click)="addQuantity(product.id)">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
             </div>
           </td>
-          <td class="price">{{product.price * this.items[i].quantity}}&thinsp;$</td>
+          <td class="price">{{product.price * this.items[i].quantity | currencyFormat}}&thinsp;$</td>
         </tr>
       </tbody>
     </table>
 
     <p class="shopping-cart-total">Total:
-      <strong id="total-amount">{{totalPrice}}&thinsp;$</strong>
+      <strong id="total-amount">{{totalPrice | currencyFormat}}&thinsp;$</strong>
     </p>
     <a class="btn pull-right" routerLink="/commande">Commander
       <i class="fa fa-angle-double-right"></i>
     </a>
-    <button class="btn" id="remove-all-items-button">
+    <button class="btn" id="remove-all-items-button" (click)="deleteShoppingCart()">
       <i class="fa fa-trash-o"></i>&nbsp; Vider le panier</button>
   </div>
 </article>
