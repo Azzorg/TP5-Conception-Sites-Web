@@ -20,7 +20,6 @@ export class ProductComponent implements OnInit {
   product : Product = new Product();
   quantity : number;
   id : number;
-  price : string;
   isAlreadyInCart : boolean = false;
 
   /**
