@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { RequestOptions } from '@angular/http';
+import { Header } from '@angular/http';
 import { Config } from './config';
 
 /**
@@ -41,7 +43,9 @@ export class ShoppingCartService {
    */
   getItems(): Promise<ProductItem[]> {
     let url = `${Config.apiUrl}/shopping-cart`;
-    return this.http.get(url)
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.get(url, options)
       .toPromise()
       .then(products => products.json() as ProductItem[])
       .catch(ShoppingCartService.handleError);
@@ -56,7 +60,9 @@ export class ShoppingCartService {
    */
   getItem(productId: number): Promise<ProductItem> {
     const url = `${Config.apiUrl}/shopping-cart/${productId}`;
-    return this.http.get(url)
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.get(url, options)
       .toPromise()
       .then(product => product.json() as ProductItem)
       .catch(() => null);
@@ -65,31 +71,33 @@ export class ShoppingCartService {
 
   /**
    * Add an item inside shopping-cart
-   * 
-   * @param product 
+   *
+   * @param product
    */
-  postItem(product: ProductItem): Promise<any> {
+  postItem(product: ProductItem){
     const url = `${Config.apiUrl}/shopping-cart`;
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
     let body = JSON.stringify(product);
     console.log("////BODY : ");
     console.log(body);
-    return this.http.post(url, body)
-      .toPromise()
-      .then(res => res.json())
-      .catch(() => null);
+    const req =  this.http.post(url, body, options);
+    req.subscribe();
   }
 
 
   /**
    * Modify an item inside-cart with its id
-   * 
-   * @param product 
+   *
+   * @param product
    */
-  putItem(product: ProductItem) {
+  putItem(product: ProductItem) : Promise<any> {
     const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
     let prod = {"quantity" : product.quantity};
     let body = JSON.stringify(prod);
-    return this.http.put(url, body)
+    return this.http.put(url, body, options)
       .toPromise()
       .then(res => res.json())
       .catch(() => null);
