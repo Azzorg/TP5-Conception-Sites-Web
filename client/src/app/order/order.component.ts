@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderService } from './../order.service';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 declare const $: any;
 
 /**
@@ -11,7 +14,16 @@ declare const $: any;
 export class OrderComponent implements OnInit {
 
   orderForm: any;
+  orderId : number = 1;
+  name : string;
+  lastname : string;
+  email : string;
+  phone : string;
+  creditCard : string;
+  expiration : string;
 
+
+  constructor(private orderService : OrderService, public router : Router) { }
   /**
    * Occurs when the component is initialized.
    */
@@ -45,10 +57,11 @@ export class OrderComponent implements OnInit {
   /**
    * Submits the order form.
    */
-  submit() {
+  submit(form: NgForm) {
     if (!this.orderForm.valid()) {
       return;
     }
     // TODO: Compléter la soumission des informations lorsque le formulaire soumis est valide.
+    console.log(form.value);
   }
 }
