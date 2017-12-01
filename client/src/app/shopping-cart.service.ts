@@ -119,4 +119,24 @@ export class ShoppingCartService {
       });
   }
 
+  deleteItems() : Promise<any> {
+    const url = `${Config.apiUrl}/shopping-cart`;
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.delete(url, options)
+      .toPromise()
+      .then(()) => console.log("delete all completed");)
+      .catch(() => console.log("delete all failed"));
+  }
+
+  deleteItem(productId : number) : Promise<any> {
+    const url = `${Config.apiUrl}/shopping-cart/${product.productId}`;
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.delete(url, options)
+      .toPromise()
+      .then(()) => console.log("delete item completed");)
+      .catch(() => console.log("delete item failed"));
+  }
+
 }
