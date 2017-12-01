@@ -34,8 +34,8 @@ export class ShoppingCartComponent {
 
 
   /**
-   * First get items from shopping-cart
-   * Then get information from database
+   * First get items from shopping-cart and all products inside database
+   * Then get products which corresponding to items
    */
   getProducts() {
 
@@ -63,8 +63,6 @@ export class ShoppingCartComponent {
         console.log(err);
       });
 
-
-    console.log("####################################    OK    ####################");
   }
 
 
