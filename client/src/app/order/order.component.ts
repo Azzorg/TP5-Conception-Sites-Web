@@ -96,7 +96,7 @@ export class OrderComponent implements OnInit {
                 console.log("order posted => succed");
                 this.shoppingCartService.deleteItems()
                   .then(data => {
-                    this.router.navigate(["/confirmation"]);
+                    this.router.navigate(["/confirmation", id]);
                   });
               })
               .catch(err => console.log("order posted => failed"))
@@ -135,7 +135,7 @@ export class OrderComponent implements OnInit {
                 console.log("order posted => succed");
                 this.shoppingCartService.deleteItems()
                   .then(data => {
-                    this.router.navigate(["/confirmation"]);
+                    this.router.navigate(["/confirmation", id]);
                   });
               })
               .catch(err => console.log("order posted => failed"))
@@ -143,11 +143,6 @@ export class OrderComponent implements OnInit {
           .catch(err => {
             console.log("no products in shopping-cart => no order added ! ");
           })
-
-
-
       })
-
-
   }
 }
