@@ -67,6 +67,7 @@ export class ProductComponent implements OnInit {
     }
     else {
       this.shoppingCartService.postItem(prod);
+      this.isAlreadyInCart = true;
     }
 
   }
