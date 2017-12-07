@@ -7,7 +7,7 @@ export class CurrencyFormat {
     transform(value: number,
         decimalLength: number = 2,
         decimalDelimiter: string = ',',
-        currency : string = " $",
+        currency: string = " $",
         chunkLength: number = 3): string {
 
         let result = '\\d(?=(\\d{' + chunkLength + '})+' + (decimalLength > 0 ? '\\D' : '$') + ')'

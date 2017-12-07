@@ -21,17 +21,14 @@ export class ConfirmationComponent {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.numOrder = +params['id'];
-      console.log("numéro de commande : " + this.numOrder);
       this.getOrder();
     });
   }
 
   getOrder() {
     this.orderService.getOrder(this.numOrder)
-    .then(value => {
-      console.log("COMMANDE :" );
-      console.log(value);
-      this.userName = value.firstName + " " + value.lastName;
-    });
+      .then(value => {
+        this.userName = value.firstName + " " + value.lastName;
+      });
   }
 }

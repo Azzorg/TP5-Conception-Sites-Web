@@ -24,18 +24,15 @@ export class ProductsComponent implements OnInit {
    * Occurs when the component is initialized.
    */
   ngOnInit() {
-    console.log("INITIALIZING PRODUCTS");
     this.getProducts();
   }
 
   changeCriteria(criteria: string) {
-    console.log("change criteria : " + criteria);
     this.criteria = criteria;
     this.getProducts();
   }
 
   changeCategory(category: string) {
-    console.log("change category : " + category);
     this.category = category;
     this.getProducts();
   }
@@ -45,7 +42,6 @@ export class ProductsComponent implements OnInit {
     this.productsService.getProducts(this.criteria, this.category)
       .then(value => {
         this.lstProducts = value;
-        console.log("products length : " + this.lstProducts.length);
         this.countProducts = this.lstProducts.length;
       });
   }

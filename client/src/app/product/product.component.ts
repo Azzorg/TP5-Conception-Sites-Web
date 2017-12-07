@@ -40,15 +40,11 @@ export class ProductComponent implements OnInit {
     this.productsService.getProduct(this.id)
       .then(value => {
         if (value) {
-          console.log(" ////////////VALUE");
-          console.log(value);
           this.product = value;
-          console.log("ID PRODUCT : " + this.id);
           this.shoppingCartService.getItem(this.id)
             .then(value => {
               this.isAlreadyInCart = true;
               this.quantity = value.quantity;
-              console.log("quantity : " + value.quantity);
             })
             .catch(value => {
               this.isAlreadyInCart = false;
@@ -56,13 +52,11 @@ export class ProductComponent implements OnInit {
             });
         }
         else {
-          console.log("ERREUR");
           //product not existing => error page
           this.router.navigate(["/\*\*"]);
         }
       })
       .catch(value => {
-        console.log("ERREUR");
         //product not existing => error page
         this.router.navigate(["/\*\*"]);
       });
@@ -83,7 +77,6 @@ export class ProductComponent implements OnInit {
     this.saved = true;
     setTimeout(function () {
       this.saved = false;
-      console.log(this.saved);
     }.bind(this), 5000);
 
   }

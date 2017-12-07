@@ -20,7 +20,7 @@ export class ProductItem {
 @Injectable()
 export class ShoppingCartService {
 
-  nbItemsChange : EventEmitter<any> = new EventEmitter();
+  nbItemsChange: EventEmitter<any> = new EventEmitter();
 
   /**
    * Handles the current error.
@@ -29,7 +29,6 @@ export class ShoppingCartService {
    * @return {Promise<object>}      A promise object.
    */
   private static handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
     return Promise.reject(error.feedbackMessage || error);
   }
 
@@ -78,22 +77,17 @@ export class ShoppingCartService {
    *
    * @param product
    */
-  postItem(product: ProductItem) : Promise<any>{
+  postItem(product: ProductItem): Promise<any> {
     const url = `${Config.apiUrl}/shopping-cart`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     let body = JSON.stringify(product);
-    console.log("////BODY : ");
-    console.log(body);
     return this.http.post(url, body, options)
       .toPromise()
       .then(res => {
-        console.log("product correctly posted in shopping-cart");
         this.nbItemsChange.emit('change');
       })
-      .catch(() => {
-        console.log("Error Post product in shopping-cart => maybe use Put");
-      });
+      .catch(() => { });
   }
 
 
@@ -111,38 +105,31 @@ export class ShoppingCartService {
     return this.http.put(url, body, options)
       .toPromise()
       .then(res => {
-        console.log("product correctly puted in shopping-cart");
         this.nbItemsChange.emit('change');
       })
-      .catch(() => {
-        console.log("Error Put product in shopping-cart");
-      });
+      .catch(() => { });
   }
 
-  deleteItems() : Promise<any> {
+  deleteItems(): Promise<any> {
     const url = `${Config.apiUrl}/shopping-cart`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.delete(url, options)
       .toPromise()
-      .then( data  => {
-        console.log("delete all completed");
+      .then(data => {
         this.nbItemsChange.emit('change');
-      })
-      .catch(() => console.log("delete all failed"));
+      });
   }
 
-  deleteItem(productId : number) : Promise<any> {
+  deleteItem(productId: number): Promise<any> {
     const url = `${Config.apiUrl}/shopping-cart/${productId}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.delete(url, options)
       .toPromise()
-      .then( data => {
-        console.log("delete item completed");
+      .then(data => {
         this.nbItemsChange.emit('change');
-      })
-      .catch(() => console.log("delete item failed"));
+      });
   }
 
 }

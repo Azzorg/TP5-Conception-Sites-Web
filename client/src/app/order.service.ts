@@ -10,8 +10,8 @@ import { ProductItem } from './shopping-cart.service';
  */
 
 export class ProductOrder {
-  public id : number;
-  public quantity : number;
+    public id: number;
+    public quantity: number;
 }
 
 export class Order {
@@ -37,7 +37,6 @@ export class OrderService {
      * @return {Promise<object>}      A promise object.
      */
     private static handleError(error: any): Promise<any> {
-        console.error('An error occurred', error);
         return Promise.reject(error.feedbackMessage || error);
     }
 
@@ -107,9 +106,7 @@ export class OrderService {
     deleteOrders(): Promise<any> {
         const url = `${Config.apiUrl}/orders`;
         return this.http.delete(url)
-            .toPromise()
-            .then(order => console.log("All orders deleted => succed"))
-            .catch(() => console.log("All orders deleted  => failed"));
+            .toPromise();
     }
 
     /**
@@ -121,8 +118,6 @@ export class OrderService {
     deleteOrder(orderId: number): Promise<any> {
         const url = `${Config.apiUrl}/orders/${orderId}`;
         return this.http.delete(url)
-            .toPromise()
-            .then(order => console.log("order deleted => succed"))
-            .catch(() => console.log("order deleted  => failed"));
+            .toPromise();
     }
 }

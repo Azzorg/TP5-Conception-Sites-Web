@@ -26,7 +26,6 @@ export class ShoppingCartComponent {
    * Occurs when the component is initialized
    */
   ngOnInit() {
-    console.log("INITIALIZING SHOPPING-CARD");
     this.lstProduct = new Array<Product>();
 
     this.getProducts();
@@ -39,30 +38,20 @@ export class ShoppingCartComponent {
    */
   getProducts() {
 
-    console.log("/////////////////////////////");
-
     let requ: [Promise<Product[]>, Promise<ProductItem[]>] = [this.productsService.getProducts(this.criteria, this.category), this.shoppingCartService.getItems()];
 
     Promise.all(requ)
       .then((results: any[]) => {
         this.items = results[1];
 
-        console.log("Taille liste produits : " + results[0].length);
-        console.log("Taille items : " + this.items.length);
-
         for (let j = 0; j < this.items.length; j++) {
           for (let i = 0; i < results[0].length; i++) {
             if (results[0][i].id == this.items[j].productId) { this.lstProduct.push(results[0][i]); }
           }
         }
-
         this.sortLists();
-
       })
-      .catch(err => {
-        console.log(err);
-      });
-
+      .catch(err => { });
   }
 
 
@@ -73,8 +62,6 @@ export class ShoppingCartComponent {
   sortLists() {
     let lstInt: Array<ProductItem> = new Array<ProductItem>();
     this.lstProduct.sort(this.sortJson);
-
-    console.log("Taille de lstProduct : " + this.lstProduct.length);
 
     for (let i = 0; i < this.lstProduct.length; i++) {
       for (let it of this.items) {
@@ -98,7 +85,6 @@ export class ShoppingCartComponent {
       this.shoppingCartService.deleteItems()
         .then(value => {
 
-          console.log("#############################     DONE");
           this.ngOnInit();
         });
     }
@@ -116,12 +102,11 @@ export class ShoppingCartComponent {
     if (responseConfirm == true) {
       this.shoppingCartService.deleteItem(id)
         .then(value => {
-
-          console.log("#############################     Yahou");
           this.ngOnInit();
         });
     }
   }
+
 
   /**
    * Remove quantity of the item with this id
@@ -144,7 +129,6 @@ export class ShoppingCartComponent {
 
       this.shoppingCartService.putItem(prod)
         .then(value => {
-          console.log("#############################     QUANTITÉ ---");
           this.ngOnInit();
         });
     }
@@ -172,12 +156,12 @@ export class ShoppingCartComponent {
 
       this.shoppingCartService.putItem(prod)
         .then(value => {
-          console.log("#############################     QUANTITÉ ++++");
           this.ngOnInit();
         });
     }
   }
 
+  
   /**
    * Sorting function for list of products
    * 
@@ -189,6 +173,7 @@ export class ShoppingCartComponent {
     let nameLowerCaseB = b.name.toLowerCase();
     return nameLowerCaseA > nameLowerCaseB ? 1 : -1;
   }
+
 
   /**
    *  To calculate the total price of shopping-cart

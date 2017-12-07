@@ -5,7 +5,7 @@ import { Config } from './config';
 /**
  * Defines a product.
  */
-export class Product  {
+export class Product {
   id: number;
   name: string;
   price: number;
@@ -28,7 +28,6 @@ export class ProductsService {
    * @return {Promise<object>}      A promise object.
    */
   private static handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
     return Promise.reject(error.feedbackMessage || error);
   }
 

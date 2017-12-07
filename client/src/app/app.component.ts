@@ -21,7 +21,6 @@ export class AppComponent {
   constructor(private shoppingCartService: ShoppingCartService) {
     shoppingCartService.nbItemsChange.subscribe(() => {
       this.getNbItemCart();
-      console.log("Emit event");
     });
   }
 
@@ -57,8 +56,6 @@ export class AppComponent {
         else {
           this.isHidden = true;
         }
-        console.log("idHidden : " + this.isHidden);
-        console.log("NB items in cart : " + this.nbItem);
       });
   }
 }

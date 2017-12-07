@@ -3,18 +3,18 @@ var router = express.Router();
 var shoppingCartManager = require("../managers/shopping-cart");
 
 // Initialize the shopping cart session.
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
   shoppingCartManager.initialize(req.session);
   next();
 });
 
 // Gets all the items in the shopping cart.
-router.get("/", function(req, res) {
+router.get("/", function (req, res) {
   res.json(shoppingCartManager.getItems());
 });
 
 // Gets the item associated with the specified product ID.
-router.get("/:id", function(req, res) {
+router.get("/:id", function (req, res) {
   var item = shoppingCartManager.getItem(req.params.id);
   if (item) {
     res.json(item);
@@ -24,10 +24,8 @@ router.get("/:id", function(req, res) {
 });
 
 // Adds a new item in the shopping cart.
-router.post("/", function(req, res) {
-  console.log("//////BODY");
-  console.log(req.body);
-  shoppingCartManager.addItem(req.body).done(function(err) {
+router.post("/", function (req, res) {
+  shoppingCartManager.addItem(req.body).done(function (err) {
     if (err) {
       res.status(400).send();
     } else {
@@ -37,9 +35,9 @@ router.post("/", function(req, res) {
 });
 
 // Updates the quantity associated with the specified product ID.
-router.put("/:id", function(req, res) {
+router.put("/:id", function (req, res) {
   var status = shoppingCartManager.updateItemQuantity(req.params.id, req.body.quantity);
-  switch(status) {
+  switch (status) {
     case 0:
       res.status(204).send();
       break;
@@ -52,7 +50,7 @@ router.put("/:id", function(req, res) {
 });
 
 // Deletes the item associated with the specified ID.
-router.delete("/:id", function(req, res) {
+router.delete("/:id", function (req, res) {
   if (shoppingCartManager.deleteItem(req.params.id)) {
     res.status(404).send();
   } else {
@@ -61,7 +59,7 @@ router.delete("/:id", function(req, res) {
 });
 
 // Deletes all the items in the shopping cart.
-router.delete("/", function(req, res) {
+router.delete("/", function (req, res) {
   shoppingCartManager.deleteItems();
   res.status(204).send();
 });

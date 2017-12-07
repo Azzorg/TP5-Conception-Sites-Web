@@ -17,23 +17,23 @@ declare const $: any;
 export class OrderComponent implements OnInit {
 
   orderForm: any;
-  orderId : number = 1;
-  name : string;
-  lastname : string;
-  email : string;
-  phone : string;
-  creditCard : string;
-  expiration : string;
+  orderId: number = 1;
+  name: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  creditCard: string;
+  expiration: string;
 
 
-  constructor(private orderService : OrderService, public router : Router, private shoppingCartService: ShoppingCartService) { }
+  constructor(private orderService: OrderService, public router: Router, private shoppingCartService: ShoppingCartService) { }
   /**
    * Occurs when the component is initialized.
    */
   ngOnInit() {
     // Initializes the validation of the form. This is the ONLY place where jQuery usage is allowed.
     this.orderForm = $('#order-form');
-    $.validator.addMethod('ccexp', function(value) {
+    $.validator.addMethod('ccexp', function (value) {
       if (!value) {
         return false;
       }
@@ -64,12 +64,10 @@ export class OrderComponent implements OnInit {
     if (!this.orderForm.valid()) {
       return;
     }
-    // TODO: Compléter la soumission des informations lorsque le formulaire soumis est valide.
-    console.log(form.value);
     // get the last id in ther orders collection
     this.orderService.getOrders()
       .then(data => {
-        let id = data[data.length-1].id + 1;
+        let id = data[data.length - 1].id + 1;
 
         let order = new Order();
         order.id = id;
@@ -82,28 +80,24 @@ export class OrderComponent implements OnInit {
         this.shoppingCartService.getItems()
           .then(data => {
 
-            for(let item of data){
+            for (let item of data) {
               let prod = {
-                id : item.productId,
-                quantity : item.quantity
+                id: item.productId,
+                quantity: item.quantity
               }
               order.products.push(prod);
             }
-            console.log(order);
             /* Post the order */
             this.orderService.postOrder(order)
               .then(data => {
-                console.log("order posted => succed");
                 this.shoppingCartService.deleteItems()
                   .then(data => {
                     this.router.navigate(["/confirmation", id]);
                   });
               })
-              .catch(err => console.log("order posted => failed"))
+              .catch(err => { })
           })
-          .catch(err => {
-            console.log("no products in shopping-cart => no order added ! ");
-          })
+          .catch(err => { })
 
       })
       /* If no order in DB => id = 1 */
@@ -121,28 +115,24 @@ export class OrderComponent implements OnInit {
         this.shoppingCartService.getItems()
           .then(data => {
 
-            for(let item of data){
+            for (let item of data) {
               let prod = {
-                id : item.productId,
-                quantity : item.quantity
+                id: item.productId,
+                quantity: item.quantity
               }
               order.products.push(prod);
             }
-            console.log(order);
             /* Post the order */
             this.orderService.postOrder(order)
               .then(data => {
-                console.log("order posted => succed");
                 this.shoppingCartService.deleteItems()
                   .then(data => {
                     this.router.navigate(["/confirmation", id]);
                   });
               })
-              .catch(err => console.log("order posted => failed"))
+              .catch(err => { })
           })
-          .catch(err => {
-            console.log("no products in shopping-cart => no order added ! ");
-          })
+          .catch(err => { })
       })
   }
 }
