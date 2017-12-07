@@ -16,11 +16,12 @@ export class AppComponent {
   getPanierRequest: string = 'http://localhost:3000/api/shopping-cart/';
   nbItem: number = 0;
   items = new Array();
+  isHidden = true;
 
   constructor(private shoppingCartService: ShoppingCartService) {
     shoppingCartService.nbItemsChange.subscribe(() => {
-       this.getNbItemCart();
-       console.log("Emit event");
+      this.getNbItemCart();
+      console.log("Emit event");
     });
   }
 
@@ -47,9 +48,16 @@ export class AppComponent {
       .then(value => {
         this.items = value;
         this.nbItem = 0;
-        for(let item of this.items){
+        for (let item of this.items) {
           this.nbItem += item.quantity;
         }
+        if (this.nbItem > 0) {
+          this.isHidden = false;
+        }
+        else {
+          this.isHidden = true;
+        }
+        console.log("idHidden : " + this.isHidden);
         console.log("NB items in cart : " + this.nbItem);
       });
   }
